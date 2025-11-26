@@ -7,7 +7,7 @@ public class SortingManager : MonoBehaviour
     public Slot[] slots;
 
     public GameObject winMenu;
-    public TextMeshProUGUI timerText, bestTimeText;
+    public TextMeshProUGUI timerText, finalTimeText, bestTimeText;
 
     private float timer;
     private bool gameRunning = true;
@@ -25,7 +25,7 @@ public class SortingManager : MonoBehaviour
         if (!gameRunning) return;
 
         timer += Time.deltaTime;
-        timerText.SetText("Time: " + Mathf.FloorToInt(timer).ToString());
+        DisplayTime(timer);
 
         if(AllSlotsFilled() && BoxesAreSorted()){
             GameOver();
@@ -55,24 +55,29 @@ public class SortingManager : MonoBehaviour
         return true;
     }
 
+    void DisplayTime(float timer){
+        timerText.SetText(timer.ToString("F2"));
+    }
+
 
     void GameOver()
     {
         gameRunning = false;
 
-        Debug.Log("You beat the game!");
-
         winMenu.SetActive(true);
 
-        float bestTime = PlayerPrefs.GetFloat("BestTime", float.MaxValue);
+        float bestTime = PlayerPrefs.GetFloat("SortHighScore", float.MaxValue);
         if (timer < bestTime)
         {
-            PlayerPrefs.SetFloat("BestTime", timer);
+            PlayerPrefs.SetFloat("SortHighScore", timer);
             PlayerPrefs.Save();
         }
 
-        bestTimeText.SetText("Best Time: " + Mathf.FloorToInt(PlayerPrefs.GetFloat("BestTime")).ToString());
+        finalTimeText.SetText("Your Time: " + timer.ToString("F2") + " seconds.");
+
+        bestTimeText.SetText("Best Time: " + PlayerPrefs.GetFloat("SortHighScore").ToString("F2") + " seconds.");
     }
+
 
     public void CallRefresh(){
         foreach(Slot slot in slots){
