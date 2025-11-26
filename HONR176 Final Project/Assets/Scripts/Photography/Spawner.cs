@@ -9,6 +9,8 @@ public class Spawner : MonoBehaviour
 
     public List<Cardinal> cardinals;
 
+    float timer;
+
     [Header("Forces")]
     public float minForce = 5f;
     public float maxForce = 10f;
@@ -21,11 +23,17 @@ public class Spawner : MonoBehaviour
     public float minZ;
     public float maxZ;
 
+    void Awake(){
+        timer = 0f;
+    }
+
     void Update()
     {
+        timer += Time.deltaTime;
+
         foreach (Cardinal card in cardinals)
         {
-            if (!card.isSpawned && card.spawnTime <= Time.time)
+            if (!card.isSpawned && card.spawnTime <= timer)
             {
                 SpawnCardinal(cardinalPrefab);
                 card.isSpawned = true;
