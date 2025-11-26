@@ -1003,7 +1003,7 @@ GameObject:
   - component: {fileID: 1118850572}
   - component: {fileID: 1118850571}
   m_Layer: 5
-  m_Name: LoadLevelOne
+  m_Name: LoadPhotography
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1082,7 +1082,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: SampleScene
+          m_StringArgument: PhotographyScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1118850572
@@ -1135,7 +1135,7 @@ GameObject:
   - component: {fileID: 1400400766}
   - component: {fileID: 1400400765}
   m_Layer: 5
-  m_Name: Lvl1TXT
+  m_Name: LdPhotoTXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Load Level 1
+  m_text: 'Photography
 
 '
   m_isRightToLeft: 0
@@ -1522,7 +1522,6 @@ GameObject:
   - component: {fileID: 1689169647}
   - component: {fileID: 1689169646}
   - component: {fileID: 1689169645}
-  - component: {fileID: 1689169644}
   m_Layer: 5
   m_Name: LevelCanvas
   m_TagString: Untagged
@@ -1530,19 +1529,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1689169644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1689169643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a1cd7647280a249b1aa5bd60917b95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuManager
-  menuItems: []
 --- !u!114 &1689169645
 MonoBehaviour:
   m_ObjectHideFlags: 0
