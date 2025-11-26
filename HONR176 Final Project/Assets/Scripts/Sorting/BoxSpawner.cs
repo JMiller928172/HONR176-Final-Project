@@ -6,7 +6,7 @@ public class BoxSpawner : MonoBehaviour
     public GameObject boxPrefab;
     public RectTransform parentCanvas;
     public int totalBoxes = 10;
-    public float startY = -50f;
+    public float startY = 150f;
 
     private int spawnedCount = 0;
     private List<GameObject> activeBoxes = new List<GameObject>();

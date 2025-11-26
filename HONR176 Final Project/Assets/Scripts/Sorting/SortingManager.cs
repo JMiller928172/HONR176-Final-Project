@@ -4,35 +4,20 @@ using System.Collections.Generic;
 
 public class SortingManager : MonoBehaviour
 {
-    public GameObject boxPrefab;
-    public Transform[] slots; // 10 slot positions
-    public TextMeshProUGUI timerText, bestTimeText, recommendationText;
+    public Slot[] slots;
 
-    private Queue<int> numbers = new Queue<int>();
+    public GameObject winMenu;
+    public TextMeshProUGUI timerText, bestTimeText;
+
     private float timer;
     private bool gameRunning = true;
 
-    void Start()
-    {
-        // Generate 10 random numbers
-        List<int> nums = new List<int>();
-        for (int i = 0; i < 10; i++)
-            nums.Add(Random.Range(1, 1000));
+    void Start(){
+        winMenu.SetActive(false);
 
-        // Shuffle
-        for (int i = 0; i < nums.Count; i++)
-        {
-            int temp = nums[i];
-            int rand = Random.Range(i, nums.Count);
-            nums[i] = nums[rand];
-            nums[rand] = temp;
+        foreach(Slot slot in slots){
+            slot.sm = this;
         }
-
-        // Queue them
-        foreach (int n in nums)
-            numbers.Enqueue(n);
-
-        recommendationText.SetText("Try Bubble Sort or Insertion Sort!");
     }
 
     void Update()
@@ -41,23 +26,43 @@ public class SortingManager : MonoBehaviour
 
         timer += Time.deltaTime;
         timerText.SetText("Time: " + Mathf.FloorToInt(timer).ToString());
+
+        if(AllSlotsFilled() && BoxesAreSorted()){
+            GameOver();
+        }
     }
 
-    public void PlaceBox(int slotIndex)
+    bool AllSlotsFilled()
     {
-        if (numbers.Count == 0) return;
-
-        int nextNum = numbers.Dequeue();
-        GameObject newBox = Instantiate(boxPrefab, slots[slotIndex].position, Quaternion.identity);
-        newBox.GetComponentInChildren<TextMeshProUGUI>().SetText(nextNum.ToString("D3"));
-
-        if (numbers.Count == 0)
-            EndGame();
+        foreach (Slot slot in slots)
+        {
+            if (!slot.hasBox) return false;
+        }
+        return true;
     }
 
-    void EndGame()
+    bool BoxesAreSorted()
+    {
+        int prev = int.MinValue;
+        foreach (Slot slot in slots)
+        {
+            if (!slot.hasBox) return false;
+
+            int current = slot.GetNumber();
+            if (current < prev && current != -1) return false;
+            prev = current;
+        }
+        return true;
+    }
+
+
+    void GameOver()
     {
         gameRunning = false;
+
+        Debug.Log("You beat the game!");
+
+        winMenu.SetActive(true);
 
         float bestTime = PlayerPrefs.GetFloat("BestTime", float.MaxValue);
         if (timer < bestTime)
@@ -67,5 +72,11 @@ public class SortingManager : MonoBehaviour
         }
 
         bestTimeText.SetText("Best Time: " + Mathf.FloorToInt(PlayerPrefs.GetFloat("BestTime")).ToString());
+    }
+
+    public void CallRefresh(){
+        foreach(Slot slot in slots){
+            slot.Refresh();
+        }
     }
 }
