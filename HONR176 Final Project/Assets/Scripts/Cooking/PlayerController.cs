@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
+    public float maxSpeed = 10f;
 
     [Header("Pickup Settings")]
     public KeyCode pickupKey = KeyCode.E;
@@ -17,7 +18,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // prevent physics rotation
+        rb.freezeRotation = true;
     }
 
     void Update()
@@ -29,16 +30,21 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
-        float h = Input.GetAxisRaw("Horizontal"); // A/D
-        float v = Input.GetAxisRaw("Vertical");   // W/S
+        float h = Input.GetAxisRaw("Horizontal"); 
+        float v = Input.GetAxisRaw("Vertical"); 
 
-        Vector3 move = new Vector3(h, 0, v).normalized * moveSpeed * Time.deltaTime;
-        rb.MovePosition(rb.position + move);
+        Vector3 moveDir = new Vector3(h, 0, v).normalized;
+
+        rb.AddForce(moveDir * moveSpeed, ForceMode.Acceleration);
+
+        if (rb.linearVelocity.magnitude > maxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+        }
     }
 
     void HandleRotation()
     {
-        // Ray from camera to mouse position
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -47,7 +53,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 point = ray.GetPoint(rayDistance);
             Vector3 direction = (point - transform.position).normalized;
-            direction.y = 0; // keep rotation flat on ground
+            direction.y = 0;
 
             if (direction.sqrMagnitude > 0.01f)
             {
@@ -86,6 +92,7 @@ public class PlayerController : MonoBehaviour
         heldObject = obj;
         heldObject.useGravity = false;
         heldObject.isKinematic = true;
+        heldObject.GetComponent<BoxCollider>().isTrigger = true;
         heldObject.transform.position = holdPoint.position;
         heldObject.transform.parent = holdPoint;
         heldObject.transform.rotation = holdPoint.rotation;
@@ -95,6 +102,7 @@ public class PlayerController : MonoBehaviour
     {
         heldObject.useGravity = true;
         heldObject.isKinematic = false;
+        heldObject.GetComponent<BoxCollider>().isTrigger = false;
         heldObject.transform.parent = null;
         heldObject = null;
     }
