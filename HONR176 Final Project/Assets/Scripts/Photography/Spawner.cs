@@ -25,6 +25,10 @@ public class Spawner : MonoBehaviour
 
     void Awake(){
         timer = 0f;
+
+        foreach (Cardinal card in cardinals){
+            card.GenSpawnTime();
+        }
     }
 
     void Update()

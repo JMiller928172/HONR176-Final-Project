@@ -10,7 +10,7 @@ public class Cardinal
     public float spawnTime;
     public bool isSpawned;
 
-    void Awake(){
+    public void GenSpawnTime(){
         spawnTime = Random.Range(minTime, maxTime);
     }
 }
