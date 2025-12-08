@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class RequestMachine : MonoBehaviour
@@ -6,6 +7,8 @@ public class RequestMachine : MonoBehaviour
     [Header("Request Settings")]
     public int totalRequests = 8;
     public TextMeshProUGUI requestText;
+    public Sprite pepperoni, cheese, peppers, anchovies, mushrooms;
+    public Image imageHolder;
 
     public bool requestsCompleted;
 
@@ -19,7 +22,7 @@ public class RequestMachine : MonoBehaviour
         requestsCompleted = false;
     }
 
-    void GenerateNewRequest()
+        void GenerateNewRequest()
     {
         if (requestsMade >= totalRequests)
         {
@@ -28,26 +31,50 @@ public class RequestMachine : MonoBehaviour
                 requestText.text = "All requests completed!";
             return;
         }
-            
 
         currentRequest = GetWeightedIngredient();
         requestsMade++;
 
         if (requestText != null)
-            requestText.text = "Request " + requestsMade + ": " + currentRequest;
+            requestText.text = "Request " + requestsMade;
+
+        if (imageHolder != null)
+        {
+            switch (currentRequest)
+            {
+                case "pepperoni":
+                    imageHolder.sprite = pepperoni;
+                    break;
+                case "cheese":
+                    imageHolder.sprite = cheese;
+                    break;
+                case "peppers":
+                    imageHolder.sprite = peppers;
+                    break;
+                case "mushrooms":
+                    imageHolder.sprite = mushrooms;
+                    break;
+                case "anchovies":
+                    imageHolder.sprite = anchovies;
+                    break;
+                default:
+                    imageHolder.sprite = null;
+                    break;
+            }
+        }
     }
 
     string GetWeightedIngredient()
     {
-        // Probabilities: Pepperoni 30%, Cheese 23%, Peppers 22%, Mushrooms 15%, Anchovies 10%
+        // Probabilities: Pepperoni 28%, Cheese 24%, Peppers 20%, Mushrooms 15%, Anchovies 13%
         float roll = Random.Range(0f, 100f);
 
-        if (roll < 30f) return "pepperoni";
-        else if (roll < 53f) return "cheese";       
-        else if (roll < 75f) return "peppers";      
-        else if (roll < 90f) return "mushrooms";    
+        if (roll < 28f) return "pepperoni";
+        else if (roll < 52f) return "cheese";       
+        else if (roll < 72f) return "peppers";      
+        else if (roll < 87f) return "mushrooms";    
         else return "anchovies";                    
-    }
+    }    
 
     void OnTriggerEnter(Collider other)
     {
