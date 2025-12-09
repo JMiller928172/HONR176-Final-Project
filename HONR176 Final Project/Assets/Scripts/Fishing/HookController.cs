@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI; // Needed for Image
 
 public class HookController : MonoBehaviour
 {
@@ -7,27 +7,31 @@ public class HookController : MonoBehaviour
 
     public KeyCode switchKey;
 
-    public TextMeshProUGUI switchText;
+    [Header("UI Images")]
+    public GameObject hookImage;
+    public GameObject cageImage;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         hookSelected = true;
+        UpdateImages();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(switchKey))
             SwitchHook();
     }
 
-    public void SwitchHook(){
+    public void SwitchHook()
+    {
         hookSelected = !hookSelected;
+        UpdateImages();
+    }
 
-        if(hookSelected)
-            switchText.SetText("Switch to Cage");
-        else
-            switchText.SetText("Switch to Hook");
+    void UpdateImages()
+    {
+        if (hookImage != null) hookImage.SetActive(hookSelected);
+        if (cageImage != null) cageImage.SetActive(!hookSelected);
     }
 }

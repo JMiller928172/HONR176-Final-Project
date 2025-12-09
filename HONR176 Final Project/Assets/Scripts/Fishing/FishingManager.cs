@@ -9,6 +9,7 @@ public class FishingManager : MonoBehaviour
     public int sharksEscaped;
 
     public GameObject resultsMenu, switchMenu;
+    public Canvas gameCanvas;
     public TextMeshProUGUI fishCaughtText;
     public TextMeshProUGUI fishEscapedText;
     public TextMeshProUGUI sharksCagedText;

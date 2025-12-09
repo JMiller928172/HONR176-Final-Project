@@ -91,6 +91,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shadow
   shadowType: 5
   isFish: 0
+  fishPrefab: {fileID: 7021564664914406435, guid: 71eb9277d1febd440bf17b1dfb99459a, type: 3}
+  sharkPrefab: {fileID: 6644465296023663858, guid: fe33460deac54f646af4d76dcdebacb1, type: 3}
 --- !u!114 &5707309656610648679
 MonoBehaviour:
   m_ObjectHideFlags: 0
