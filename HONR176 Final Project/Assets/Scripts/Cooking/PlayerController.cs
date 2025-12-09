@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -12,6 +13,9 @@ public class PlayerController : MonoBehaviour
     public float pickupRange = 2f;
     public Transform holdPoint;
 
+    [Header("UI Settings")]
+    public TextMeshProUGUI pickupText;
+
     private Rigidbody rb;
     private Rigidbody heldObject;
 
@@ -19,6 +23,9 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        if (pickupText != null)
+            pickupText.gameObject.SetActive(false); 
     }
 
     void Update()
@@ -26,6 +33,7 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleRotation();
         HandlePickup();
+        HandlePickupPrompt();
     }
 
     void HandleMovement()
@@ -84,6 +92,42 @@ public class PlayerController : MonoBehaviour
             {
                 DropObject();
             }
+        }
+    }
+
+    void HandlePickupPrompt()
+    {
+        if (pickupText == null) return;
+
+        if (heldObject == null)
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, pickupRange);
+            bool foundPickup = false;
+
+            foreach (Collider col in colliders)
+            {
+                Rigidbody targetRb = col.attachedRigidbody;
+                if (targetRb != null && targetRb != rb)
+                {
+                    foundPickup = true;
+                    break;
+                }
+            }
+
+            if (foundPickup)
+            {
+                pickupText.gameObject.SetActive(true);
+                pickupText.text = $"Press {pickupKey} to pick up";
+            }
+            else
+            {
+                pickupText.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            pickupText.gameObject.SetActive(true);
+            pickupText.text = $"Press {pickupKey} to drop";
         }
     }
 
